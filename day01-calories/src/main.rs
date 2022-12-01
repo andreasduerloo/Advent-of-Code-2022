@@ -2,7 +2,6 @@ use std::fs;
 use std::env;
 
 fn main() {
-
     let mut arguments = env::args();
 
     if let Some(filename) = arguments.nth(1) {
@@ -29,14 +28,9 @@ fn main() {
             println!("🌟 Second star ✨ - The sum of the three highest calorie counts is {}.", totals[totals.len() - 1] + totals[totals.len() - 2] + totals[totals.len() - 3]);
         
         } else {
-    
-            println!("Could not read file. Exiting. 🦌");
-            return
-    
+            println!("Could not read file. Exiting. 🦌");    
         }
     } else {
-
         println!("No argument was passed. Exiting. 🦌");
-
     }
 }
