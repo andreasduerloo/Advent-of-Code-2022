@@ -28,9 +28,9 @@ fn main() {
             println!("🌟 Second star ✨ - The sum of the three highest calorie counts is {}.", totals[totals.len() - 1] + totals[totals.len() - 2] + totals[totals.len() - 3]);
         
         } else {
-            println!("Could not read file. Exiting. 🦌");    
+            eprintln!("Could not read file. Exiting. 🦌");    
         }
     } else {
-        println!("No argument was passed. Exiting. 🦌");
+        eprintln!("No argument was passed. Exiting. 🦌");
     }
 }
