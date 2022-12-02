@@ -22,20 +22,19 @@ fn main() {
 
             let mut input_vec: Vec<&str> = content.lines().collect();
 
-            let mut first_score: usize = 0;
-            let mut second_score: usize = 0;
+            let mut scores: [usize; 2] = [0, 0];
 
             while let Some(combination) = input_vec.pop() {
                 if let Some(score) = solve(combination, &ruleset1) {
-                    first_score += score;
+                    scores[0] += score;
                 }
                 if let Some(score) = solve(combination, &ruleset2) {
-                    second_score += score;
+                    scores[1] += score;
                 }
             }
 
-            println!("⭐ First star ⭐ - Total score is {}.", first_score);
-            println!("🌟 Second star ✨ - Total score is {}.", second_score);
+            println!("⭐ First star ⭐ - Total score is {}.", scores[0]);
+            println!("🌟 Second star ✨ - Total score is {}.", scores[1]);
         } else {
             eprintln!("Could not read file. Exiting. 🦌");
         }
