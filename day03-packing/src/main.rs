@@ -9,13 +9,24 @@ fn main() {
         if let Ok(content) = fs::read_to_string(filename) {
             
             let mut input_vec: Vec<&str> = content.lines().collect();
-            let mut total: u64 = 0;
+            let mut totals: [u64; 2] = [0, 0];
 
-            while let Some(backpack) = input_vec.pop() {
-                total += item_value(find_common(backpack).unwrap());
+            // Start with the second star, we'll consume the vector with an iterator for the first one
+
+            for i in 0..100 {
+                let three_backpacks: Vec<&str> = Vec::from([input_vec[i * 3], input_vec[(i * 3) + 1], input_vec[(i * 3) + 2]]);
+
+                totals[1] += item_value(find_badge(three_backpacks).unwrap());
             }
 
-            println!("⭐ First star ⭐ - Total value is {}.", total);
+            // First star
+
+            while let Some(backpack) = input_vec.pop() {
+                totals[0] += item_value(find_common(backpack).unwrap());
+            }
+
+            println!("⭐ First star ⭐ - Total value is {}.", totals[0]);
+            println!("🌟 Second star ✨ - Total value of the badges is {}.", totals[1]);
 
         } else {
             eprintln!("Could not read file. Exiting. 🦌");

@@ -32,3 +32,25 @@ pub fn item_value(item: char) -> u64 { // a - z = 1 - 26, A - Z = 27 - 52
         }
     }
 }
+
+pub fn find_badge(backpacks: Vec<&str>) -> Option<char> {
+    let mut items: HashMap<char, [bool; 3]> = HashMap::new();
+
+    for i in 0..3 {
+        let char_vec: Vec<char> = backpacks[i].chars().collect();
+
+        for char in char_vec {
+            let present = items.entry(char).or_insert([false; 3]);
+            present[i] = true;
+        }
+    }
+
+    for item in items.keys() {
+        if let Some(value) = items.get(item) {
+            if *value == [true; 3] {
+                return Some(*item)
+            }
+        }
+    }
+    None
+}
