@@ -1,5 +1,3 @@
-// Better print: build a string
-
 use std::fs;
 use std::env;
 use day05_crates::*;
@@ -19,12 +17,17 @@ fn main() {
                 apply_9001(instruction, &mut config.stack2);
             }
 
+            print!("⭐ First star ⭐ - top crates: ");
+
             for stack in config.stack1 {
-                println!("Top crate: {}", stack[stack.len() - 1]);
+                print!("{}", stack[stack.len() - 1]);
             }
+
+            println!();
+            print!("🌟 Second star ✨ - top crates: ");
         
             for stack in config.stack2 {
-                println!("Top crate (2): {}", stack[stack.len() - 1]);
+                print!("{}", stack[stack.len() - 1]);
             }
 
         } else {
