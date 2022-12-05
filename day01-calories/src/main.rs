@@ -25,7 +25,10 @@ fn main() {
             totals.sort();
     
             println!("⭐ First star ⭐ - The highest amount of calories is {}.", totals[totals.len()-1]);
-            println!("🌟 Second star ✨ - The sum of the three highest calorie counts is {}.", totals[totals.len() - 1] + totals[totals.len() - 2] + totals[totals.len() - 3]);
+
+            let top_three: usize = totals.drain(totals.len() - 3..).sum();
+
+            println!("🌟 Second star ✨ - The sum of the three highest calorie counts is {}.", top_three);
         
         } else {
             eprintln!("Could not read file. Exiting. 🦌");    
