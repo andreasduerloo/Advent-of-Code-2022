@@ -51,7 +51,7 @@ pub fn setup(mut input_vec: Vec<&str>) -> Config {
 
     let stacks2 = stacks1.clone();
 
-    // Return the rest of the input, those are the instructions
+    // Grab the rest of the input, those are the instructions
 
     let instructions: Vec<&str> = input_vec.drain((emptyline + 1)..).collect();
 
@@ -61,10 +61,13 @@ pub fn setup(mut input_vec: Vec<&str>) -> Config {
 pub fn apply_9000(instruction: &str, stacks: &mut Vec<Box<Vec<char>>>) {
     let instruction_vec: Vec<&str> = instruction.split_whitespace().collect();
 
-    for _i in 0..usize::from_str_radix(instruction_vec[1], 10).unwrap() {
-        let crate_to_move: char = stacks[usize::from_str_radix(instruction_vec[3], 10).unwrap() - 1].pop().unwrap();
-        // println!("{}", crate_to_move);
-        stacks[usize::from_str_radix(instruction_vec[5], 10).unwrap() - 1].push(crate_to_move);
+    let count: usize = usize::from_str_radix(instruction_vec[1], 10).unwrap();
+    let from: usize = usize::from_str_radix(instruction_vec[3], 10).unwrap() - 1;
+    let to: usize = usize::from_str_radix(instruction_vec[5], 10).unwrap() - 1;
+
+    for _i in 0..count {
+        let crate_to_move: char = stacks[from].pop().unwrap();
+        stacks[to].push(crate_to_move);
     }
 }
 
