@@ -23,8 +23,7 @@ fn main() {
                 print!("{}", stack[stack.len() - 1]);
             }
 
-            println!();
-            print!("🌟 Second star ✨ - top crates: ");
+            print!("\n🌟 Second star ✨ - top crates: ");
         
             for stack in config.stack2 {
                 print!("{}", stack[stack.len() - 1]);
