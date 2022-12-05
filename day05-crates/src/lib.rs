@@ -1,11 +1,13 @@
+type State = Vec<Box<Vec<char>>>;
+
 pub struct Config<'a> {
-    pub stack1: Vec<Box<Vec<char>>>,
-    pub stack2: Vec<Box<Vec<char>>>,
+    pub stack1: State,
+    pub stack2: State,
     pub instructions: Vec<&'a str>
 }
 
 impl Config<'_> {
-    pub fn new(stack1: Vec<Box<Vec<char>>>, stack2: Vec<Box<Vec<char>>>, instructions: Vec<&str>) -> Config {
+    pub fn new(stack1: State, stack2: State, instructions: Vec<&str>) -> Config {
         Config {
             stack1,
             stack2,
@@ -32,7 +34,7 @@ pub fn setup(mut input_vec: Vec<&str>) -> Config {
 
     // Create a vector with pointers to vectors to represent the stacks
 
-    let mut stacks1: Vec<Box<Vec<char>>> = Vec::new();
+    let mut stacks1: State = Vec::new();
 
     for _i in 0..stack_count {
         stacks1.push(Box::new(Vec::new()));
@@ -58,7 +60,7 @@ pub fn setup(mut input_vec: Vec<&str>) -> Config {
     Config::new(stacks1, stacks2, instructions)
 }
 
-pub fn apply_9000(instruction: &str, stacks: &mut Vec<Box<Vec<char>>>) {
+pub fn apply_9000(instruction: &str, stacks: &mut State) {
     let instruction_vec: Vec<&str> = instruction.split_whitespace().collect();
 
     let count: usize = usize::from_str_radix(instruction_vec[1], 10).unwrap();
@@ -71,7 +73,7 @@ pub fn apply_9000(instruction: &str, stacks: &mut Vec<Box<Vec<char>>>) {
     }
 }
 
-pub fn apply_9001(instruction: &str, stacks: &mut Vec<Box<Vec<char>>>) {
+pub fn apply_9001(instruction: &str, stacks: &mut State) {
     let instruction_vec: Vec<&str> = instruction.split_whitespace().collect();
 
     let from: usize = usize::from_str_radix(instruction_vec[3], 10).unwrap() - 1;
