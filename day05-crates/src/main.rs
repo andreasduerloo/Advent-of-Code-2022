@@ -12,10 +12,10 @@ fn main() {
 
             let mut config: Config = setup(input_vec);
 
-            for instruction in config.instructions {
-                apply_9000(instruction, &mut config.stack1);
-                apply_9001(instruction, &mut config.stack2);
-            }
+            config.instructions.iter().for_each( |inst| {
+                apply_9000(inst, &mut config.stack1);
+                apply_9001(inst, &mut config.stack2);
+            });
 
             print!("⭐ First star ⭐ - top crates: ");
 
