@@ -17,13 +17,13 @@ fn main() {
                 apply_9001(inst, &mut config.stack2);
             });
 
-            print!("⭐ First star ⭐ - top crates: ");
+            print!("⭐ First star ⭐ - 📦 top crates: ");
 
             for stack in config.stack1 {
                 print!("{}", stack[stack.len() - 1]);
             }
 
-            print!("\n🌟 Second star ✨ - top crates: ");
+            print!("\n🌟 Second star ✨ - 📦 top crates: ");
         
             for stack in config.stack2 {
                 print!("{}", stack[stack.len() - 1]);
