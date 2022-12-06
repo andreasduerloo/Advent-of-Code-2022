@@ -6,16 +6,6 @@ pub struct Config<'a> {
     pub instructions: Vec<&'a str>
 }
 
-impl Config<'_> {
-    pub fn new(stack1: State, stack2: State, instructions: Vec<&str>) -> Config {
-        Config {
-            stack1,
-            stack2,
-            instructions
-        }
-    }
-}
-
 pub fn setup(mut input_vec: Vec<&str>) -> Config {
     // Find the empty line - the line above is a header, the line below is the first instruction
 
@@ -57,7 +47,11 @@ pub fn setup(mut input_vec: Vec<&str>) -> Config {
 
     let instructions: Vec<&str> = input_vec.drain((emptyline + 1)..).collect();
 
-    Config::new(stacks1, stacks2, instructions)
+    Config {
+        stack1: stacks1,
+        stack2: stacks2,
+        instructions: instructions
+    }
 }
 
 pub fn apply_9000(instruction: &str, stacks: &mut State) {
