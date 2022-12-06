@@ -1,4 +1,4 @@
-type State = Vec<Box<Vec<char>>>;
+type State = Vec<Vec<char>>;
 
 pub struct Config<'a> {
     pub stack1: State,
@@ -37,7 +37,7 @@ pub fn setup(mut input_vec: Vec<&str>) -> Config {
     let mut stacks1: State = Vec::new();
 
     for _i in 0..stack_count {
-        stacks1.push(Box::new(Vec::new()));
+        stacks1.push(Vec::new());
     }
 
     // Populate the stacks based on the input
