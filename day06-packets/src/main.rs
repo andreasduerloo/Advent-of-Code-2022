@@ -31,8 +31,6 @@ fn find_index(input_vec: &Vec<char>, size: usize) -> Option<usize> {
 
         if letters.len() == size {
             return Some(i + 1);
-        } else {
-            continue
         }
     }
     None
