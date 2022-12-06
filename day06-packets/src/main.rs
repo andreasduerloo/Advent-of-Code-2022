@@ -26,8 +26,7 @@ fn find_index(input_vec: &Vec<char>, size: usize) -> Option<usize> {
         let mut letters: HashMap<char, bool> = HashMap::new();
 
         for j in 0..size {
-            let double = letters.entry(input_vec[i-j]).or_insert(false);
-            *double = true;
+            letters.entry(input_vec[i-j]).and_modify( |double| { *double = true } ).or_insert(false);
         }
 
         if letters.len() == size {
