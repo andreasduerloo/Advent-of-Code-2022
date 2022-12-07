@@ -18,20 +18,14 @@ fn main() {
             let to_free: usize = 30000000 - (70000000 - directories.get(&Vec::from(["/"])).unwrap());
             let mut closest_entry: usize = 70000000;
 
-            // let total_under: usize = directories.values() // Can't put a 'for_each' in between here, vector is consumed.
-            //     .filter(|size| { *size <= &100000 })
-            //     .sum();
-
-            let mut total_under: usize = 0;
-
-            for size in directories.values() {
-                if size > &to_free && size < &closest_entry {
-                    closest_entry = *size;
-                }
-                if size < &100000 {
-                    total_under += *size;
-                }
-            }
+            let total_under: usize = directories.values()
+                .inspect(|size| {
+                    if *size > &to_free && *size < &closest_entry {
+                        closest_entry = **size;
+                    }
+                })
+                .filter(|size| { *size <= &100000 })
+                .sum();
 
             println!("⭐ First star ⭐ - total size of directories under 100000 in size: {}", total_under);
             println!("🌟 Second star ✨ - size of best directory to delete: {}",  closest_entry);
