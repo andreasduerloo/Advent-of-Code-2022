@@ -25,7 +25,7 @@ fn main() {
 
             let overlap: (usize, usize) = content.lines()
                 .map(|s| overlap(&parse_instruction(s)))
-                //.map(|c| (overlap(&c))) // We're calling both functions every time, we can do better
+                // .map(|c| (fully_contains(&c), overlaps(&c))) // We're calling both functions every time, we can do better
                 .reduce(|total, item| {
                     (total.0 + item.0, total.1 + item.1) })
                 .unwrap();
