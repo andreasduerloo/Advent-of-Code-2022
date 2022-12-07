@@ -15,7 +15,7 @@ fn main() {
                 parse(line, &mut current_path, &mut directories);
             }
 
-            let to_free: usize = 30000000 - (70000000 - directories.get(&Vec::from(["/"])).unwrap());
+            let to_free: usize = 30000000 - (70000000 - directories.get(&vec!["/"]).unwrap());
             let mut closest_entry: usize = 70000000;
 
             let total_under: usize = directories.values()
