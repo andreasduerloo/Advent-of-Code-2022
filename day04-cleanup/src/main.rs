@@ -35,13 +35,11 @@ fn main() {
 }
 
 fn parse_instruction(instructions: &str) -> [usize; 4] {
-    let split_instructions: Vec<&str> = instructions.split(&[',','-'][..]).collect();
-
     let mut output: [usize; 4] = [0; 4];
 
-    for i in 0..4 {
-        output[i] = usize::from_str_radix(&split_instructions[i], 10).unwrap();
-    }
+    instructions.split(&[',','-'][..])
+        .enumerate()
+        .for_each( |(i, val)| { output[i] = usize::from_str_radix(val, 10).unwrap(); });
 
     output
 }
