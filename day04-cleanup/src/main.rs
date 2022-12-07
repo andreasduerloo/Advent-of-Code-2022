@@ -24,8 +24,8 @@ fn main() {
             // }
 
             let overlap: (usize, usize) = content.lines()
-                .map(|s| parse_instruction(s))
-                .map(|c| (fully_contains(&c), overlaps(&c)))
+                .map(|s| overlap(&parse_instruction(s)))
+                //.map(|c| (overlap(&c))) // We're calling both functions every time, we can do better
                 .reduce(|total, item| {
                     (total.0 + item.0, total.1 + item.1) })
                 .unwrap();
@@ -51,18 +51,29 @@ fn parse_instruction(instructions: &str) -> [usize; 4] {
     output
 }
 
-fn fully_contains(coordinates: &[usize; 4]) -> usize // bool {
+fn overlap(coordinates: &[usize; 4]) -> (usize, usize) {
     if ( coordinates[0] <= coordinates[2] && coordinates[1] >= coordinates[3] ) || ( coordinates[0] >= coordinates[2] && coordinates[1] <= coordinates[3] ) {
-        1 // true
+        (1, 1) // Complete overlap
+    }
+    else if ( coordinates[0] <= coordinates[2] && coordinates[1] >= coordinates[2] ) || ( coordinates[0] >= coordinates[2] && coordinates[0] <= coordinates[3] ) {
+        (0, 1) // Partial overlap
     } else {
-        0 // false
+        (0, 0)
     }
 }
 
-fn overlaps(coordinates: &[usize; 4]) -> usize // bool {
-    if ( coordinates[0] <= coordinates[2] && coordinates[1] >= coordinates[2] ) || ( coordinates[0] >= coordinates[2] && coordinates[0] <= coordinates[3] ) {
-        1 // true
-    } else {
-        0 // false
-    }
-}
+// fn fully_contains(coordinates: &[usize; 4]) -> usize // bool {
+//     if ( coordinates[0] <= coordinates[2] && coordinates[1] >= coordinates[3] ) || ( coordinates[0] >= coordinates[2] && coordinates[1] <= coordinates[3] ) {
+//         1 // true
+//     } else {
+//         0 // false
+//     }
+// }
+
+// fn overlaps(coordinates: &[usize; 4]) -> usize // bool {
+//     if ( coordinates[0] <= coordinates[2] && coordinates[1] >= coordinates[2] ) || ( coordinates[0] >= coordinates[2] && coordinates[0] <= coordinates[3] ) {
+//         1 // true
+//     } else {
+//         0 // false
+//     }
+// }
