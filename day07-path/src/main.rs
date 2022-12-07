@@ -55,9 +55,8 @@ fn parse<'a>(command: &'a str, path: &mut Vec<&'a str>, dirs: &mut HashMap<Vec<&
             return
         }
         _ => { // This is a size, increase all directories in the current path
+            let size: usize = usize::from_str_radix(split_line[0], 10).unwrap();
             for i in 0..path.len() {
-                let size: usize = usize::from_str_radix(split_line[0], 10).unwrap();
-
                 dirs.entry(path[0..(path.len() - i)].to_vec())
                     .and_modify(|s| *s += size)
                     .or_insert(size);
