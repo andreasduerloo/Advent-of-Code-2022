@@ -21,7 +21,7 @@ fn main() {
                     if values[(i * 40) + j + 1] == j as isize || values[(i * 40) + j + 1] == (j as isize + 1) || values[(i * 40) + j + 1] == (j as isize - 1) {
                         print!("#");
                     } else {
-                        print!(".");
+                        print!(" ");
                     }
                 }
                 println!();
