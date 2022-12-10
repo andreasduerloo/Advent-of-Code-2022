@@ -22,69 +22,18 @@ fn main() {
 
             // LOOPS!
 
-            let mut score_vec: Vec<usize> = Vec::new();
+            let mut top_score: usize = 0;
 
-            for i in 0..99 {
-                for j in 0..99 {
-                    let mut left_score: usize = 0;
-                    if j != 0 {
-                        for k in 1..(j + 1) {
-                            if forest[i][j - k].height < forest[i][j].height {
-                                left_score += 1;
-                            } else {
-                                left_score += 1;
-                                break
-                            }
-                        }
+            for i in 1..(forest.len() - 1) {
+                for j in 1..(forest[i].len() - 1) {
+                    let tree_score: usize = calculate_score(i, j, &forest);
+                    if tree_score > top_score {
+                        top_score = tree_score
                     }
-                    
-
-                    let mut top_score: usize = 0;
-                    if i != 0 {
-                        for k in 1..(i + 1) {
-                            if forest[i - k][j].height < forest[i][j].height {
-                                top_score += 1;
-                            } else {
-                                top_score += 1;
-                                break
-                            }
-                        }
-                    }
-                    
-
-                    let mut right_score: usize = 0;
-                    if j != 98 {
-                        for k in (j + 1)..99 {
-                            if forest[i][k].height < forest[i][j].height {
-                                right_score += 1;
-                            } else {
-                                right_score += 1;
-                                break
-                            }
-                        }
-                    }
-                    
-
-                    let mut down_score: usize = 0;
-                    if i != 98 {
-                        for k in (i + 1)..99 {
-                            if forest[k][j].height < forest[i][j].height {
-                                down_score += 1;
-                            } else {
-                                down_score += 1;
-                                break
-                            }
-                        }
-                    }
-
-                    score_vec.push(left_score * top_score * right_score * down_score);
                 }
             }
 
-            score_vec.sort();
-            score_vec.reverse();
-
-            println!("🌟 Second star ✨ - Highest score: {}", score_vec[0]);
+            println!("🌟 Second star ✨ - Highest score: {}", top_score);
 
         } else {
             eprintln!("Could not read file. Exiting. 🦌");

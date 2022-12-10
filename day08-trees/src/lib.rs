@@ -60,3 +60,50 @@ pub fn crawl(forest: &mut Forest, index: usize, direction: Direction, count: &mu
         }
     }    
 }
+
+pub fn calculate_score(row: usize, column: usize, forest: &Forest) -> usize {
+    let mut scores: [usize; 4] = [0; 4];
+    let dimension: usize = forest.len();
+
+    // Look to the right
+    for i in (column + 1)..dimension {
+        if forest[row][i].height < forest[row][column].height {
+            scores[0] += 1;
+        } else {
+            scores[0] += 1;
+            break
+        }
+    }
+
+    // Look to the left
+    for i in 1..(column + 1) {
+        if forest[row][column - i].height < forest[row][column].height {
+            scores[1] += 1;
+        } else {
+            scores[1] += 1;
+            break
+        }
+    }
+
+    // Look down
+    for i in (row + 1)..dimension {
+        if forest[i][column].height < forest[row][column].height {
+            scores[2] += 1;
+        } else {
+            scores[2] += 1;
+            break
+        }
+    }
+
+    // Look up
+    for i in 1..(row + 1) {
+        if forest[row - i][column].height < forest[row][column].height {
+            scores[3] += 1;
+        } else {
+            scores[3] += 1;
+            break
+        }
+    }
+
+    scores.into_iter().reduce(|acc, s| { acc * s }).unwrap()
+}
