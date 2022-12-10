@@ -7,25 +7,8 @@ fn main() {
     if let Some(filename) = arguments.nth(1) {
         if let Ok(content) = fs::read_to_string(filename) {
             
-            // let mut input_vec: Vec<&str> = content.lines().collect();
-
-            // let mut overlap: [usize; 2] = [0, 0];
-
-            // while let Some(instruction) = input_vec.pop() {
-            //     let coordinates: [usize; 4] = parse_instruction(instruction);
-
-            //     if fully_contains(&coordinates) { // No need to check the second part
-            //         overlap[0] += 1;
-            //         overlap[1] += 1;
-            //     }
-            //     else if overlaps(&coordinates) {
-            //         overlap[1] += 1;
-            //     }
-            // }
-
             let overlap: (usize, usize) = content.lines()
                 .map(|s| overlap(&parse_instruction(s)))
-                // .map(|c| (fully_contains(&c), overlaps(&c))) // We're calling both functions every time, we can do better
                 .reduce(|total, item| {
                     (total.0 + item.0, total.1 + item.1) })
                 .unwrap();
@@ -61,19 +44,3 @@ fn overlap(coordinates: &[usize; 4]) -> (usize, usize) {
         (0, 0)
     }
 }
-
-// fn fully_contains(coordinates: &[usize; 4]) -> usize // bool {
-//     if ( coordinates[0] <= coordinates[2] && coordinates[1] >= coordinates[3] ) || ( coordinates[0] >= coordinates[2] && coordinates[1] <= coordinates[3] ) {
-//         1 // true
-//     } else {
-//         0 // false
-//     }
-// }
-
-// fn overlaps(coordinates: &[usize; 4]) -> usize // bool {
-//     if ( coordinates[0] <= coordinates[2] && coordinates[1] >= coordinates[2] ) || ( coordinates[0] >= coordinates[2] && coordinates[0] <= coordinates[3] ) {
-//         1 // true
-//     } else {
-//         0 // false
-//     }
-// }
