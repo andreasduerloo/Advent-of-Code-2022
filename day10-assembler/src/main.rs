@@ -14,11 +14,19 @@ fn main() {
                 execute(instr, &mut values, &mut value);
             });
 
-            println!("Result: {}", values[20] * 20 + values[60] * 60 + values[100] * 100 + values[140] * 140 + values[180] * 180 + values[220] * 220);
+            let cycles: [usize; 6] = [20, 60, 100, 140, 180, 220];
+
+            let total_value: isize = cycles.into_iter()
+                .map(|cycle| cycle as isize * values[cycle])
+                .sum();
+
+            println!("⭐ First star ⭐ - The total value is: {}", total_value);
+            println!("🌟 Second star ✨");
 
             for i in 0..6 {
                 for j in 0..40 {
-                    if values[(i * 40) + j + 1] == j as isize || values[(i * 40) + j + 1] == (j as isize + 1) || values[(i * 40) + j + 1] == (j as isize - 1) {
+                    let difference: isize = values[(i * 40) + j + 1] - j as isize;
+                    if difference >= -1 && difference <= 1 {
                         print!("#");
                     } else {
                         print!(" ");
