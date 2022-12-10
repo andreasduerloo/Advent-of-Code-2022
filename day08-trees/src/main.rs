@@ -88,7 +88,7 @@ fn main() {
                 }
             }
 
-            println!("Visible trees: {}", vis_count);
+            println!("⭐ First star ⭐ - Visible trees: {}", vis_count);
 
             // LOOPS!
 
@@ -154,7 +154,7 @@ fn main() {
             score_vec.sort();
             score_vec.reverse();
 
-            println!("Highest score: {}", score_vec[0]);
+            println!("🌟 Second star ✨ - Highest score: {}", score_vec[0]);
 
         } else {
             eprintln!("Could not read file. Exiting. 🦌");
