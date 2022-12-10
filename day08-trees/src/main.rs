@@ -11,71 +11,80 @@ fn main() {
             let mut forest: Forest = grow_forest(input);
             let mut vis_count: usize = 0;
 
-            // Left-to-right
-            for i in 0..99 {
-                let mut tallest: u8 = 0;
-                for j in 0..99 {
-                    if forest[i][j].height > tallest || i == 0 || j == 0 || i == 98 || j == 98 {
-                        forest[i][j].visible = true;
-                        vis_count += 1;
-                        tallest = forest[i][j].height;
-                        if tallest == 9 {
-                            break
-                        }
-                    }
-                }
+            for i in 0..(forest.len()) {
+                crawl(&mut forest, i, Direction::Right, &mut vis_count);
+                crawl(&mut forest, i, Direction::Left , &mut vis_count);
+                crawl(&mut forest, i, Direction::Up , &mut vis_count);
+                crawl(&mut forest, i, Direction::Down , &mut vis_count);
             }
 
-            // Right-to-left
-            for i in 0..99 {
-                let mut tallest: u8 = 0;
-                for j in 0..99 {
-                    if forest[i][98 - j].height > tallest || i == 0 || j == 0 || i == 98 || j == 98 {
-                        if !forest[i][98 - j].visible {
-                            forest[i][98 - j].visible = true;
-                            vis_count += 1;
-                        }
-                        tallest = forest[i][98 - j].height;
-                        if tallest == 9 {
-                            break
-                        }
-                    }
-                }
-            }
+            // println!("Visible: {}", visible);
 
-            // Top-to-bottom
-            for i in 0..99 {
-                let mut tallest: u8 = 0;
-                for j in 0..99 {
-                    if forest[j][i].height > tallest || i == 0 || j == 0 || i == 98 || j == 98 {
-                        if !forest[j][i].visible {
-                            forest[j][i].visible = true;
-                            vis_count += 1;
-                        }
-                        tallest = forest[j][i].height;
-                        if tallest == 9 {
-                            break
-                        }
-                    }
-                }
-            }
+            // // Left-to-right
+            // for i in 0..99 {
+            //     let mut tallest: u8 = 0;
+            //     for j in 0..99 {
+            //         if forest[i][j].height > tallest || i == 0 || j == 0 || i == 98 || j == 98 {
+            //             forest[i][j].visible = true;
+            //             vis_count += 1;
+            //             tallest = forest[i][j].height;
+            //             if tallest == 9 {
+            //                 break
+            //             }
+            //         }
+            //     }
+            // }
 
-            // Bottom-to-top
-            for i in 0..99 {
-                let mut tallest: u8 = 0;
-                for j in 0..99 {
-                    if forest[98 - j][i].height > tallest || i == 0 || j == 0 || i == 98 || j == 98 {
-                        if !forest[98 - j][i].visible {
-                            forest[98 - j][i].visible = true;
-                            vis_count += 1;
-                        }
-                        tallest = forest[98 - j][i].height;
-                        if tallest == 9 {
-                            break
-                        }
-                    }
-                }
-            }
+            // // Right-to-left
+            // for i in 0..99 {
+            //     let mut tallest: u8 = 0;
+            //     for j in 0..99 {
+            //         if forest[i][98 - j].height > tallest || i == 0 || j == 0 || i == 98 || j == 98 {
+            //             if !forest[i][98 - j].visible {
+            //                 forest[i][98 - j].visible = true;
+            //                 vis_count += 1;
+            //             }
+            //             tallest = forest[i][98 - j].height;
+            //             if tallest == 9 {
+            //                 break
+            //             }
+            //         }
+            //     }
+            // }
+
+            // // Top-to-bottom
+            // for i in 0..99 {
+            //     let mut tallest: u8 = 0;
+            //     for j in 0..99 {
+            //         if forest[j][i].height > tallest || i == 0 || j == 0 || i == 98 || j == 98 {
+            //             if !forest[j][i].visible {
+            //                 forest[j][i].visible = true;
+            //                 vis_count += 1;
+            //             }
+            //             tallest = forest[j][i].height;
+            //             if tallest == 9 {
+            //                 break
+            //             }
+            //         }
+            //     }
+            // }
+
+            // // Bottom-to-top
+            // for i in 0..99 {
+            //     let mut tallest: u8 = 0;
+            //     for j in 0..99 {
+            //         if forest[98 - j][i].height > tallest || i == 0 || j == 0 || i == 98 || j == 98 {
+            //             if !forest[98 - j][i].visible {
+            //                 forest[98 - j][i].visible = true;
+            //                 vis_count += 1;
+            //             }
+            //             tallest = forest[98 - j][i].height;
+            //             if tallest == 9 {
+            //                 break
+            //             }
+            //         }
+            //     }
+            // }
 
             println!("⭐ First star ⭐ - Visible trees: {}", vis_count);
 
