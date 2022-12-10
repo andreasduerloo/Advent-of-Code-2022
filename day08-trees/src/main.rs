@@ -1,5 +1,6 @@
 use std::fs;
 use std::env;
+use day08_trees::*;
 
 fn main() {
     let mut arguments = env::args();
@@ -7,19 +8,7 @@ fn main() {
     if let Some(filename) = arguments.nth(1) {
         if let Ok(input) = fs::read_to_string(filename) {
 
-            let input_vec: Vec<&str> = input.lines().collect();
-            
-            let mut forest: [[Tree; 99]; 99] = [[Tree { height: 0, visible: false}; 99]; 99];
-
-            for i in 0..99 {
-                for j in 0..99 {
-                    forest[i][j] = Tree {
-                        height: u8::from_str_radix(&input_vec[i][j..j + 1], 10).unwrap(),
-                        visible: false
-                    };
-                }
-            }
-
+            let mut forest: Forest = grow_forest(input);
             let mut vis_count: usize = 0;
 
             // Left-to-right
@@ -162,10 +151,4 @@ fn main() {
     } else {
         eprintln!("No argument was passed. Exiting. 🦌");
     }
-}
-
-#[derive (Clone, Copy)]
-struct Tree {
-    height: u8,
-    visible: bool
 }
