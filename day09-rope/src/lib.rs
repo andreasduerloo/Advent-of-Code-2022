@@ -86,3 +86,97 @@ fn move_tail(head: &Point, tail: &mut Point, map: &mut Map) {
     // Mark current position
     map.entry(*tail).or_insert(true);
 }
+
+pub fn move_head2(instruction: (&str, isize), rope: &mut [Point; 10], map: &mut Map) {
+    match instruction.0 {
+        "D" => {
+            for _i in 0..instruction.1 {
+                rope[0].1 -= 1;
+                for j in 1..10 {
+                    move_tail2(rope, j);
+                    if j == 9 {
+                        map.entry(rope[9]).or_insert(true);
+                    }
+                }
+            }
+        },
+        "L" => {
+            for _i in 0..instruction.1 {
+                rope[0].0 -= 1;
+                for j in 1..10 {
+                    move_tail2(rope, j);
+                    if j == 9 {
+                        map.entry(rope[9]).or_insert(true);
+                    }
+                }
+            }
+        },
+        "R" => {
+            for _i in 0..instruction.1 {
+                rope[0].0 += 1;
+                for j in 1..10 {
+                    move_tail2(rope, j);
+                    if j == 9 {
+                        map.entry(rope[9]).or_insert(true);
+                    }
+                }
+            }
+        },
+        "U" => {
+            for _i in 0..instruction.1 {
+                rope[0].1 += 1;
+                for j in 1..10 {
+                    move_tail2(rope, j);
+                    if j == 9 {
+                        map.entry(rope[9]).or_insert(true);
+                    }
+                }
+            }
+        },
+        _ => {
+            return
+        }
+    }
+}
+
+fn move_tail2(rope: &mut [Point; 10], index: usize) {
+    // Decide if we need to move - either dimension is two higher or lower
+    if (rope[index - 1].0 - rope[index].0) > 1 || (rope[index - 1].0 - rope[index].0) < (-1) || (rope[index - 1].1 - rope[index].1) > 1 || (rope[index - 1].1 - rope[index].1) < (-1) {
+        // Move the tail
+        // Horizontally
+        if rope[index - 1].1 == rope[index].1 {
+            if rope[index - 1].0 < rope[index].0 { // The head is to the left
+                rope[index].0 -= 1;
+            } else {
+                rope[index].0 += 1;
+            }
+        }
+        // Vertically
+        else if rope[index - 1].0 == rope[index].0 {
+            if rope[index - 1].1 < rope[index].1 { // The head is below the tail
+                rope[index].1 -= 1;
+            } else {
+                rope[index].1 += 1;
+            }
+        }
+        // Diagonally
+        else {
+            if rope[index - 1].0 > rope[index].0 && rope[index - 1].1 > rope[index].1 { // Top right
+                rope[index].0 += 1;
+                rope[index].1 += 1;
+            }
+            else if rope[index - 1].0 > rope[index].0 && rope[index - 1].1 < rope[index].1 { // Bottom right
+                rope[index].0 += 1;
+                rope[index].1 -= 1;
+            }
+            else if rope[index - 1].0 < rope[index].0 && rope[index - 1].1 > rope[index].1 { // Top left
+                rope[index].0 -= 1;
+                rope[index].1 += 1;
+            }
+            else { // Bottom left
+                rope[index].0 -= 1;
+                rope[index].1 -= 1;
+           }
+        }
+    }  
+}
