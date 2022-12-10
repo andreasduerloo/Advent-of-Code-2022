@@ -48,13 +48,13 @@ fn follow_head(rope: &mut [Point], map: &mut Map) {
             }
             // Vertically
             else if rope[i - 1].0 == rope[i].0 {
-                if rope[i - 1].1 < rope[i].1 { // The head is below the tail
+                if rope[i - 1].1 < rope[i].1 { // The previous know is down
                     rope[i].1 -= 1;
                 } else {
                     rope[i].1 += 1;
                 }
             }
-            else {
+            else { // Diagonally
                 if rope[i - 1].0 > rope[i].0 && rope[i - 1].1 > rope[i].1 { // Top right
                     rope[i].0 += 1;
                     rope[i].1 += 1;
@@ -72,7 +72,7 @@ fn follow_head(rope: &mut [Point], map: &mut Map) {
                     rope[i].1 -= 1;
                }
             }
-            if i == rope.len() - 1 { // We just moved the tail
+            if i == rope.len() - 1 { // We just moved the tail - take note of its location
                 map.entry(rope[i]).or_insert(true);
             }
         } else { // The previous knot has not moved, we can break out of the entire loop - store the tail's location anyway to get the origin
