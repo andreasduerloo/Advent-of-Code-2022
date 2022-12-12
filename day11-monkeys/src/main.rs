@@ -1,7 +1,6 @@
 use std::fs;
 use std::env;
 use day11_monkeys::*;
-use std::collections::HashMap;
 
 fn main() {
     let mut arguments = env::args();
@@ -13,6 +12,14 @@ fn main() {
 
             input.split("\r\n\r\n").for_each(|val| monkeys.push(create_monkey(val)));
 
+            // Secret sauce for second star: value mod (product of all the primes) will have the same moduloes as teh value itself
+            // We can reduce big values to a more manageable size that way
+            let mut magic_number: usize = 1;
+
+            for i in 0..monkeys.len() {
+                magic_number *= monkeys[i].div_by_test;
+            }
+
             let mut star = 1;
             if let Some(value) = arguments.next() {
                 if value == "2" {
@@ -21,17 +28,15 @@ fn main() {
             }
             
             if star == 2 {
-                let mut divisibility_cache: HashMap<usize, usize> = HashMap::new();
-
-                    for _i in 0..10000 {
-                        for j in 0..8 {
-                            inspect_and_throw_cached(&mut monkeys, j, 2, &mut divisibility_cache);
-                        }
+                for _i in 0..10000 {
+                    for j in 0..8 {
+                        inspect_and_throw(&mut monkeys, j, 2, &magic_number);
                     }
+                }
             } else {
                 for _i in 0..20 {
                     for j in 0..8 {
-                        inspect_and_throw(&mut monkeys, j, 1);
+                        inspect_and_throw(&mut monkeys, j, 1, &magic_number);
                     }
                 }
             }
