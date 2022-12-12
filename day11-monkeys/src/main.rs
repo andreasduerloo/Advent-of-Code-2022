@@ -12,7 +12,7 @@ fn main() {
 
             input.split("\r\n\r\n").for_each(|val| monkeys.push(create_monkey(val)));
 
-            // Secret sauce for second star: value mod (product of all the primes) will have the same moduloes as teh value itself
+            // Secret sauce for second star: value mod (product of all the primes) will have the same moduloes as the value itself
             // We can reduce big values to a more manageable size that way
             let mut magic_number: usize = 1;
 
