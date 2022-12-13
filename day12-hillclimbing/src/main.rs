@@ -31,9 +31,12 @@ fn main() {
                 }
             }
 
-            let route_length: usize = breadth_first_search(&mut grid, start);
+            let mut grid2 = grid.clone(); // We'll need this later
 
-            println!("Length of best route: {}", route_length);
+            let (route_length, e) = breadth_first_search(&mut grid, start, 'E'); // Also tells us where 'E' is
+
+            println!("⭐ First star ⭐ - Length of best route: {}", route_length);
+            println!("🌟 Second star ✨ - Shortest route to an 'a': {}", breadth_first_descend(&mut grid2, e, 'a').0);
 
         } else {
             eprintln!("Could not read file. Exiting. 🦌");
