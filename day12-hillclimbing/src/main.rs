@@ -7,14 +7,16 @@ fn main() {
 
     if let Some(filename) = arguments.nth(1) {
         if let Ok(input) = fs::read_to_string(filename) {
-            let mut grid: [[char; 114]; 41] = [['A'; 114]; 41];
+            let mut grid: Grid = [[('A', false); 114]; 41];
 
             let lines: Vec<&str> = input.lines().collect();
 
             for i in 0..lines.len() {
                 lines[i].chars()
                     .enumerate()
-                    .for_each(|(j, c)| grid[i][j] = c);
+                    .for_each(|(j, c)| {
+                        grid[i][j].0 = c;
+                    });
             }
 
             // Find 'S'
@@ -22,24 +24,15 @@ fn main() {
 
             for i in 0..grid.len() {
                 for j in 0..grid[i].len() {
-                    if grid[i][j] == 'S' {
-                        start = (i, j);
+                    if grid[i][j].0 == 'S' {
+                        start.0 = i;
+                        start.1 = j;
                     }
                 }
             }
 
-            // Find 'E'
-            let mut goal: Point = (0, 0);
+            let route_length: usize = breadth_first_search(&mut grid, start);
 
-            for i in 0..grid.len() {
-                for j in 0..grid[i].len() {
-                    if grid[i][j] == 'E' {
-                        goal = (i, j);
-                    }
-                }
-            }
-
-            let route_length: usize = a_star(start, goal, &grid);
             println!("Length of best route: {}", route_length);
 
         } else {
