@@ -6,6 +6,7 @@ struct Valve {
 }
 
 // Other option: Valve contains the name of its neighbors, and we have a HashMap with the flow rates per valve.
+// OR HashMap with name - pointer to the valve, so that we can add pointers within the valves.
 
 pub fn read_valve(line: &str) -> Valve {
     let split_line: Vec<&str> = line.split_whitespace().collect();
