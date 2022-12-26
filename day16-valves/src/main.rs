@@ -11,9 +11,12 @@ fn main() {
     if let Some(filename) = arguments.nth(1) {
         if let Ok(input) = fs::read_to_string(filename) {
             
-            let mut valves: HashMap<&str, &Valve> = HashMap::new();
+            let mut flowrates: HashMap<&str, usize> = HashMap::new();
+            let mut neighbors: HashMap<&str, Vec<&str>> = HashMap::new();
 
-
+            for line in input {
+                read_valve(line, &mut flowrates, &mut neighbors);
+            }
 
         } else {
             eprintln!("Could not read file. Exiting. 🦌");

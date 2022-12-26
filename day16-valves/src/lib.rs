@@ -1,22 +1,26 @@
-struct Valve {
-    name: &str,
-    flow_rate: usize,
-    // neighbors: Vec<&Valve>
-    // neighbors: Vec<Box<Valve>>
-}
-
 // Two HashMaps: name - flow rate, and name - neighbors. No pointers.
 
-
-// Other option: Valve contains the name of its neighbors, and we have a HashMap with the flow rates per valve.
-// OR HashMap with name - pointer to the valve, so that we can add pointers within the valves.
-
-pub fn read_valve(line: &str) -> Valve {
+pub fn read_valve(line: &str, flowrates: &mut HashMap<&str, usize>, neighbors: &mut HashMap<&str, Vec<&str>>) {
     let split_line: Vec<&str> = line.split_whitespace().collect();
 
-    Valve {
-        name: split_line[1],
-        flow_rate: usize::from_str_radix(split_line[4][5..split_line[4].len() - 1], 10).unwrap();
-        // neighbors:
+    flowrates.insert(split_line[1], usize::from_str_radix(split_line[4][5..split_line[4].len() - 1], 10).unwrap());
+
+    let mut neighbor_vec: Vec<&str> = Vec::new();
+
+    // Neighbors start at index 9.
+
+    let mut index: usize = 9;
+
+    while index <= split_line.len() {
+        if index == split_line.len() {
+            // No comma after this one
+            neighbor_vec.push(split_line[index]);
+        } else {
+            // There's a comma to strip
+            neighbor_vec.push(split_line[index][0..split_line[index].len() - 1]);
+            index += 1;
+        }
     }
+
+
 }
