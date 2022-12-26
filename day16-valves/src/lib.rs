@@ -2,8 +2,11 @@ struct Valve {
     name: &str,
     flow_rate: usize,
     // neighbors: Vec<&Valve>
-    neighbors: Vec<Box<Valve>>
+    // neighbors: Vec<Box<Valve>>
 }
+
+// Two HashMaps: name - flow rate, and name - neighbors. No pointers.
+
 
 // Other option: Valve contains the name of its neighbors, and we have a HashMap with the flow rates per valve.
 // OR HashMap with name - pointer to the valve, so that we can add pointers within the valves.

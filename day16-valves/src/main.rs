@@ -10,7 +10,11 @@ fn main() {
 
     if let Some(filename) = arguments.nth(1) {
         if let Ok(input) = fs::read_to_string(filename) {
-            //
+            
+            let mut valves: HashMap<&str, &Valve> = HashMap::new();
+
+
+
         } else {
             eprintln!("Could not read file. Exiting. 🦌");
         }
