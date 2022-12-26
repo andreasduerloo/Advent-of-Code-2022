@@ -14,7 +14,7 @@ fn main() {
             let mut flowrates: HashMap<&str, usize> = HashMap::new();
             let mut neighbors: HashMap<&str, Vec<&str>> = HashMap::new();
 
-            for line in input {
+            for line in input.lines() {
                 read_valve(line, &mut flowrates, &mut neighbors);
             }
 
