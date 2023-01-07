@@ -27,7 +27,5 @@ fn main() {
     }
 }
 
-// TODO: The problem is probably that we're looking at individual characters, and this missing 10's in the input
-
 #[cfg(test)]
 mod input_tests;
