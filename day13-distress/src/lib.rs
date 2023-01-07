@@ -8,7 +8,8 @@ pub fn is_ordered(two_lines: &str) -> bool {
     }
 
     let mut indices: [usize; 2] = [0, 0]; // Track an index for each line, they can move separately
-    let mut list_depth: [usize; 2] = [0, 0]; // Also track how many lists 'deep' we are
+    let mut list_depth: [usize; 2] = [0, 0]; // Also track how many lists 'deep' we are -> not currently used
+    let mut added_depth: [usize; 2] = [0, 0]; // Check how often we had to pretend an int was a list
     let mut elements: [usize; 2] = [0, 0]; // Track whether one line has run out of elements
 
     while indices[0] < chars[0].len() || indices[1] < chars[1].len() {
@@ -20,7 +21,7 @@ pub fn is_ordered(two_lines: &str) -> bool {
                 '[' => { indices[0] += 1; list_depth[0] += 1; compare[0] = false },
                 ']' => { indices[0] += 1; list_depth[0] -= 1; compare[0] = false },
                 ',' => { indices[0] += 1; compare[0] = false },
-                _ => { elements[0] += 1; compare[0] = true; } // Not correct yet
+                _ => { elements[0] += 1; compare[0] = true; } // Not entirely correct yet
             };
         } else {
             return true;
@@ -32,7 +33,7 @@ pub fn is_ordered(two_lines: &str) -> bool {
                 '[' => { indices[1] += 1; list_depth[1] += 1; compare[1] = false },
                 ']' => { indices[1] += 1; list_depth[1] -= 1; compare[1] = false },
                 ',' => { indices[1] += 1; compare[1] = false },
-                _ => { elements[1] += 1; compare[1] = true; } // Not correct yet
+                _ => { elements[1] += 1; compare[1] = true; } // Not entirely correct yet
             };
         } else {
             return false;
@@ -40,10 +41,10 @@ pub fn is_ordered(two_lines: &str) -> bool {
         
         // Compare if we have two numbers
         if compare[0] && compare[1] {
-            if elements[1] > elements[0] {
+            if list_depth[1] > list_depth[0] {
                 return true;
             }
-            else if elements[0] > elements[1] {
+            else if list_depth[0] > list_depth[1] {
                 return false;
             }
             else if chars[0][indices[0]] < chars[1][indices[1]] {
@@ -57,7 +58,16 @@ pub fn is_ordered(two_lines: &str) -> bool {
                 indices[1] += 1;
             }
         }
+        else if compare[0] { // Does this play nice with commas?
+            list_depth[0] += 1;
+            added_depth[0] += 1;
+        }
+        else if compare[1] {
+            list_depth[1] += 1;
+            added_depth[1] += 1;
+        }
     }
+
     // The loop is done - one line ran out
     println!("Element counts: {} and {}", elements[0], elements[1]);
     if elements[1] > elements[0] {
@@ -93,7 +103,7 @@ mod tests {
     }
 
     #[test]
-    fn fourth_example() { // Fails
+    fn fourth_example() {
         let input = "[[4,4],4,4]\r\n[[4,4],4,4,4]";
 
         assert_eq!(is_ordered(input), true);
