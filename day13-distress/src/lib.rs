@@ -1,0 +1,129 @@
+pub fn is_ordered(two_lines: &str) -> bool {
+    let lines: Vec<&str> = two_lines.lines().collect();
+
+    let mut chars: Vec<Vec<char>> = Vec::new();
+    
+    for i in 0..lines.len() {
+        chars.push(lines[i].chars().collect());
+    }
+
+    let mut indices: [usize; 2] = [0, 0]; // Track an index for each line, they can move separately
+    let mut list_depth: [usize; 2] = [0, 0]; // Also track how many lists 'deep' we are
+    let mut elements: [usize; 2] = [0, 0]; // Track whether one line has run out of elements
+
+    while indices[0] < chars[0].len() || indices[1] < chars[1].len() {
+        let mut compare: [bool; 2] = [false; 2]; // Check if we have something to compare
+
+        // Left element
+        if indices[0] < chars[0].len() {
+            match chars[0][indices[0]] {
+                '[' => { indices[0] += 1; list_depth[0] += 1; compare[0] = false },
+                ']' => { indices[0] += 1; list_depth[0] -= 1; compare[0] = false },
+                ',' => { indices[0] += 1; compare[0] = false },
+                _ => { elements[0] += 1; compare[0] = true; } // Not correct yet
+            };
+        } else {
+            return true;
+        }
+
+        // Right element
+        if indices[1] < chars[1].len() {
+            match chars[1][indices[1]] {
+                '[' => { indices[1] += 1; list_depth[1] += 1; compare[1] = false },
+                ']' => { indices[1] += 1; list_depth[1] -= 1; compare[1] = false },
+                ',' => { indices[1] += 1; compare[1] = false },
+                _ => { elements[1] += 1; compare[1] = true; } // Not correct yet
+            };
+        } else {
+            return false;
+        }
+        
+        // Compare if we have two numbers
+        if compare[0] && compare[1] {
+            if elements[1] > elements[0] {
+                return true;
+            }
+            else if elements[0] > elements[1] {
+                return false;
+            }
+            else if chars[0][indices[0]] < chars[1][indices[1]] {
+                return true;
+            }
+            else if chars[0][indices[0]] > chars[1][indices[1]] {
+                return false;
+            }
+            else {
+                indices[0] += 1;
+                indices[1] += 1;
+            }
+        }
+    }
+    // The loop is done - one line ran out
+    println!("Element counts: {} and {}", elements[0], elements[1]);
+    if elements[1] > elements[0] {
+        return true;
+    } else {
+        false
+    }   
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn first_example() {
+        let input = "[1,1,3,1,1]\r\n[1,1,5,1,1]";
+
+        assert_eq!(is_ordered(input), true);
+    }
+
+    #[test]
+    fn second_example() {
+        let input = "[[1],[2,3,4]]\r\n[[1],4]";
+
+        assert_eq!(is_ordered(input), true);
+    }
+
+    #[test]
+    fn third_example() {
+        let input = "[9]\r\n[[8,7,6]]";
+
+        assert_eq!(is_ordered(input), false);
+    }
+
+    #[test]
+    fn fourth_example() { // Fails
+        let input = "[[4,4],4,4]\r\n[[4,4],4,4,4]";
+
+        assert_eq!(is_ordered(input), true);
+    }
+
+    #[test]
+    fn fifth_example() {
+        let input = "[7,7,7,7]\r\n[7,7,7]";
+
+        assert_eq!(is_ordered(input), false);
+    }
+
+    #[test]
+    fn sixth_example() {
+        let input = "[]\r\n[3]";
+
+        assert_eq!(is_ordered(input), true);
+    }
+
+    #[test]
+    fn seventh_example() {
+        let input = "[[[]]]\r\n[[]]";
+
+        assert_eq!(is_ordered(input), false);
+    }
+
+    #[test]
+    fn eighth_example() {
+        let input = "[1,[2,[3,[4,[5,6,7]]]],8,9]\r\n[1,[2,[3,[4,[5,6,0]]]],8,9]";
+
+        assert_eq!(is_ordered(input), false);
+    }
+}
