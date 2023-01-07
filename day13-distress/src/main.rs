@@ -10,7 +10,7 @@ fn main() {
             
             let solution: usize = input.split("\r\n\r\n")
                 .enumerate()
-                .map(|(i, val)| (i, is_ordered(val)))
+                .map(|(i, val)| (i + 1, is_ordered(val)))
                 .filter(|tup| tup.1)
                 .map(|tup| tup.0)
                 //.reduce(|acc, val| acc + val)
