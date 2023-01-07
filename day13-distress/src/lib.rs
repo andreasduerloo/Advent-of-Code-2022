@@ -41,16 +41,29 @@ pub fn is_ordered(two_lines: &str) -> bool {
         
         // Compare if we have two numbers
         if compare[0] && compare[1] {
+            let mut numbers: [u32; 2] = [0, 0];
+
+            if chars[0][indices[0] + 1].is_ascii_digit() { // Not bothering with the index yet
+                numbers[0] = 10 * chars[0][indices[0]].to_digit(10).unwrap() + chars[0][indices[0]+ 1].to_digit(10).unwrap();
+            } else {
+                numbers[0] = chars[0][indices[0]].to_digit(10).unwrap();
+            }
+            if chars[1][indices[1] + 1].is_ascii_digit() {
+                numbers[1] = 10 * chars[1][indices[1]].to_digit(10).unwrap() + chars[1][indices[1]+ 1].to_digit(10).unwrap();
+            } else {
+                numbers[1] = chars[1][indices[1]].to_digit(10).unwrap();
+            }
+
             if list_depth[1] > list_depth[0] {
                 return true;
             }
             else if list_depth[0] > list_depth[1] {
                 return false;
             }
-            else if chars[0][indices[0]] < chars[1][indices[1]] {
+            else if numbers[0] < numbers[1] {
                 return true;
             }
-            else if chars[0][indices[0]] > chars[1][indices[1]] {
+            else if numbers[0] > numbers[1] {
                 return false;
             }
             else {
@@ -135,5 +148,12 @@ mod tests {
         let input = "[1,[2,[3,[4,[5,6,7]]]],8,9]\r\n[1,[2,[3,[4,[5,6,0]]]],8,9]";
 
         assert_eq!(is_ordered(input), false);
+    }
+
+    #[test]
+    fn test_with_10() {
+        let input = "[2]\r\n[10]";
+
+        assert_eq!(is_ordered(input), true);
     }
 }
