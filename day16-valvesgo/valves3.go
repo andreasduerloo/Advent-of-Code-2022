@@ -9,16 +9,7 @@ import (
 )
 
 /*
-What we're doing different this time:
-- Instead of tracking the pressure per minute of a state, we will immediately add all the pressure a valve will release over the remaining time when we open it.
-- Paths are explored until either:
-  - All valves with a flow rate are open, or
-  - We hit 30 minutes
-- Once either of those conditions is met we report the pressure and don't create a new state (i.e. the branch ends)
-
-That means we have to make a few changes:
-- We have to identify which valves have a flowrate other than zero
-- States no longer track ppm (pressure per minute), but they do track time
+The issue was that we were re-using the same temporary object within a loop, which overwrote the 'path' and 'open' slices because they were pointing to one and the same slice.
 */
 
 func main() {
@@ -117,7 +108,7 @@ func pulse(states []*state, wvalves *[]string, highest *int) []*state {
 	out := make([]*state, 0)
 	for _, s := range states {
 		// Prune branches
-		if s.time >= 15 && float64(s.pressure) <= float64(*highest)*float64(0.75) {
+		if s.time >= 10 && float64(s.pressure) <= float64(*highest)*float64(0.75) {
 			continue
 		}
 
@@ -145,6 +136,7 @@ func pulse(states []*state, wvalves *[]string, highest *int) []*state {
 
 				if newstate.pressure > *highest {
 					*highest = newstate.pressure
+					fmt.Println(newstate.path)
 				}
 				out = append(out, &newstate)
 			}
