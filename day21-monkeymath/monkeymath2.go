@@ -34,24 +34,39 @@ func main() {
 	}
 
 	// Put all the monkeys in a big ol' slice (from the top down) and populate the pointers
-	monkeyslice := make([]*monkey)
+	monkeyslice := make([]*monkey, 0)
 
-	for _, c := range monkeymap[root].cstr {
-		monkeymap[root].children = append(monkeymap[root].children, monkeymap[c])
+	for i, c := range monkeymap["root"].cstr {
+		monkeymap["root"].children[i] = monkeymap[c]
 
-		monkeymap[c].parent = "root"
+		monkeymap[c].parent = monkeymap["root"]
 	}
-	delete(monkeys, "root")
+	monkeyslice = append(monkeyslice, monkeymap["root"])
+	delete(monkeymap, "root")
 
-	monkeyslice = monkeyslice.append[monkeymap["root"]]
+	// This part needs work
+	index := 0
+	for len(monkeymap) != 0 {
+		if monkeyslice[index].value == 0 { // This monkey has children
+			for _, c := range monkeyslice[index].cstr { // For each child...
+				if monkeymap[c].value == 0 {
+					for i, g := range monkeymap[c].cstr { // Set the grandchildren's children and parent
+						monkeymap[c].children[i] = monkeymap[g]
+						monkeymap[g].parent = monkeymap[c]
+					}
+					monkeyslice = append(monkeyslice, monkeymap[c])
+					delete(monkeymap, c)
 
-	for len(monkeys) != 0 {
-		//
+					index += 1 // This doesn't go here
+				}
+			}
+		}
 	}
 
 }
 
 type monkey struct {
+	//name      string
 	value     int
 	cstr      [2]string
 	children  [2]*monkey
@@ -67,12 +82,14 @@ func parse(l string, m *map[string]*monkey) { // Map is a reference type, we don
 		case 2:
 			val, _ := strconv.Atoi(elems[1])
 			newm := monkey{
+				//name: elems[0][:4],
 				value: val,
 			}
 
 			(*m)[elems[0][:len(elems[0])-1]] = &newm
 		case 4:
 			newm := monkey{
+				//name: elems[0][:4],
 				cstr:      [2]string{elems[1], elems[3]},
 				operation: elems[2],
 			}
