@@ -10,6 +10,8 @@ import (
 
 /*
 The issue was that we were re-using the same temporary object within a loop, which overwrote the 'path' and 'open' slices because they were pointing to one and the same slice.
+
+Far better option: build a graph containing only the relevant valves and the costs (in time) between them.
 */
 
 func main() {
@@ -136,7 +138,7 @@ func pulse(states []*state, wvalves *[]string, highest *int) []*state {
 
 				if newstate.pressure > *highest {
 					*highest = newstate.pressure
-					fmt.Println(newstate.path)
+					// fmt.Println(newstate.path)
 				}
 				out = append(out, &newstate)
 			}
