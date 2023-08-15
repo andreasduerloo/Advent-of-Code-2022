@@ -1,14 +1,3 @@
-/*
-	STATUS: tree data structure works for the example input, but not for the full input.
-	This probably means the tree is extremely unbalanced.
-
-	Root was a ruse.
-
-	New idea:
-	- Work with pointers
-	- Put all the pointers in a map
-*/
-
 package main
 
 import (
