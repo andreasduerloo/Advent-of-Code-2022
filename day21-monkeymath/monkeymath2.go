@@ -20,7 +20,7 @@ import (
 
 func main() {
 	var lines []string
-	input, err := os.ReadFile("./exampleinput.txt")
+	input, err := os.ReadFile("./input.txt")
 	if err != nil {
 		fmt.Println("Error:", err)
 	} else {
@@ -47,43 +47,11 @@ func main() {
 		}
 	}
 
-	for k, v := range monkeymap {
-		fmt.Println(k, v)
-	}
-
-	fmt.Println(knownvals)
-
 	for monkeymap["root"].value == 0 {
-		fmt.Println(knownvals) // This doesn't replicate to the next iteration of the loop -> Turn this into a function and return the queue TODO
-		m, knownvals := dequeue(knownvals)
-		fmt.Println(knownvals)
-		fmt.Println(m.value)
-
-		if m.parent.value == 0 { // Try to resolve this monkey (the other child might not be resolved yet)
-			if m.parent.children[0].value != 0 && m.parent.children[1].value != 0 { // Resolve parent and add to queue
-				fmt.Println(m.parent.children[0].value, m.parent.children[1].value)
-				switch m.parent.operation {
-				case "+":
-					m.parent.value = m.parent.children[0].value + m.parent.children[1].value
-				case "-":
-					m.parent.value = m.parent.children[0].value - m.parent.children[1].value
-				case "*":
-					m.parent.value = m.parent.children[0].value + m.parent.children[1].value
-				case "/":
-					m.parent.value = m.parent.children[0].value / m.parent.children[1].value
-				}
-
-				knownvals = append(knownvals, m.parent)
-			} else { // The other child is not resolved yet, put this one at the back of the queue
-				knownvals = append(knownvals, m)
-			}
-		} else { // This monkey has already been resolved, move on.
-			fmt.Println("Here")
-			continue
-		}
+		knownvals = resolve(knownvals)
 	}
 
-	fmt.Println(monkeymap["Root"].value)
+	fmt.Println(monkeymap["root"].value)
 }
 
 type monkey struct {
@@ -103,14 +71,12 @@ func parse(l string, m *map[string]*monkey) { // Map is a reference type, we don
 		case 2:
 			val, _ := strconv.Atoi(elems[1])
 			newm := monkey{
-				//name: elems[0][:4],
 				value: val,
 			}
 
 			(*m)[elems[0][:len(elems[0])-1]] = &newm
 		case 4:
 			newm := monkey{
-				//name: elems[0][:4],
 				cstr:      [2]string{elems[1], elems[3]},
 				operation: elems[2],
 			}
@@ -120,33 +86,29 @@ func parse(l string, m *map[string]*monkey) { // Map is a reference type, we don
 	}
 }
 
-/*
-func resolve(t []*monkey) int {
-	index := len(t) - 1
+func resolve(known []*monkey) []*monkey {
+	m, kvals := dequeue(known)
 
-	for t[1].value == 0 {
-		if t[index] == nil {
-			index -= 1
-		} else { // We found a value
-			switch t[index/2].operation {
+	if m.parent.value == 0 { // Try to resolve the parent so we can add it to the queue
+		if m.parent.children[0].value != 0 && m.parent.children[1].value != 0 { // Are both children resolved?
+			switch m.parent.operation {
 			case "+":
-				t[index/2].value = t[index].value + t[index-1].value
+				m.parent.value = m.parent.children[0].value + m.parent.children[1].value
 			case "-":
-				t[index/2].value = t[index-1].value - t[index].value
+				m.parent.value = m.parent.children[0].value - m.parent.children[1].value
 			case "*":
-				t[index/2].value = t[index].value * t[index-1].value
+				m.parent.value = m.parent.children[0].value * m.parent.children[1].value
 			case "/":
-				t[index/2].value = t[index-1].value / t[index].value
+				m.parent.value = m.parent.children[0].value / m.parent.children[1].value
 			}
 
-			index = index - 2
+			kvals = append(kvals, m.parent)
+		} else { // The other child is not resolved yet, back to the queue.
+			kvals = append(kvals, m)
 		}
-
 	}
-
-	return t[1].value
+	return kvals
 }
-*/
 
 // We'll use a slice to implement a queue, we add by appending, so we just need a dequeue function
 func dequeue(queue []*monkey) (*monkey, []*monkey) {
