@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+// Up next
+// Second star: calculate other 'leg', then go down to humn
+// First star: recursive implementation?
+
 func main() {
 	var lines []string
 	input, err := os.ReadFile("./input.txt")
